@@ -13,13 +13,15 @@ function markCell(event) {
     cnt++;
   }
   let winner = checkWin();
-  if (winner) {
-    alert(winner + " wins!");
-    resetGame();
-  } else if (cnt === 9) {
-    alert("It's a draw!");
-    resetGame();
-  }
+  setTimeout(() => {
+    if (winner) {
+      alert(winner + " wins!");
+      resetGame();
+    } else if (cnt === 9) {
+      alert("It's a draw!");
+      resetGame();
+    }
+  }, 1);
 }
 
 function resetGame() {
