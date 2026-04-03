@@ -4,12 +4,23 @@ let reset = document.querySelector("button");
 let given = document.querySelector(".given");
 
 given.textContent =
-  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta dolor fuga veritatis consequatur architecto vel quod illo ea fugit veniam libero nostrum dignissimos, id labore deleniti accusamus alias nesciunt nam?";
+  "lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta dolor fuga veritatis consequatur architecto vel quod illo ea fugit veniam libero nostrum dignissimos, id labore deleniti accusamus alias nesciunt nam?";
 
-let time = 5;
+let text = given.textContent;
+given.textContent = "";
+let givenArr = [];
+
+for (let i = 0; i < text.length; i++) {
+  let span = document.createElement("span");
+  span.textContent = text[i];
+  given.appendChild(span);
+  givenArr[i] = text[i];
+}
+let time = 30;
 let isTimerRunning = false;
 let intervalID;
-function cntDown() {
+let arrPosition = 0;
+function timerFn() {
   isTimerRunning = true;
   intervalID = setInterval(() => {
     if (time > 0) {
@@ -24,7 +35,20 @@ function cntDown() {
 }
 
 input.addEventListener("keydown", (e) => {
-  if (!isTimerRunning) cntDown();
+  if (e.key.length > 1 && e.key !== "Backspace") return;
+  if (!isTimerRunning) timerFn();
+  let span = given.children[arrPosition];
+  if (e.key == "Backspace" && arrPosition > 0) {
+    arrPosition--;
+    span = given.children[arrPosition];
+    span.style.color = "";
+  } else if (e.key == givenArr[arrPosition]) {
+    span.style.color = "green";
+    arrPosition++;
+  } else {
+    span.style.color = "red";
+    arrPosition++;
+  }
 });
 reset.addEventListener("click", () => {
   time = 5;
