@@ -3,22 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fast Type</title>
+    <title>Type speed test</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <main>
-      <header>
-        <h1>Typing Speed Test</h1>
-      </header>
-      <div class="givenText"></div>
-      <div class="inputText">
-        <input type="text" name="" id="inputText" />
+    <div class="container">
+      <header>Typing speed test</header>
+      <div class="timer">Time</div>
+      <div class="given"></div>
+      <div class="textInput">
+        <input
+          type="text"
+          id="textInput"
+          placeholder="type here"
+          autocomplete="off"
+        />
       </div>
-      <div class="submitButton">
-        <input type="submit" name="" id="submitButton" />
+      <div class="resetBtn">
+        <button>Reset</button>
       </div>
-    </main>
+    </div>
+    <script src="script.js"></script>
   </body>
-  <script src="script.js"></script>
 </html>
