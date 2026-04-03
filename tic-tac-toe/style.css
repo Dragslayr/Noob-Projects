@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: monospace;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #282828;
+}
+#board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 5px;
+}
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #aa6565;
+  font-size: 2rem;
+  cursor: pointer;
+  font-size: 100px;
+}
+.cell:hover {
+  background-color: #ff7f7f;
+}
+
+#reset-button {
+  position: absolute;
+  top: 20px;
+  padding: 10px 20px;
+  background-color: #aa6565;
+}
+#reset-button:hover {
+  background-color: #ff7f7f;
+  cursor: pointer;
+}
