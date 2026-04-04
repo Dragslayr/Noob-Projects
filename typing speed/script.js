@@ -45,7 +45,7 @@ input.addEventListener("keydown", (e) => {
   let span = given.children[arrPosition];
   span.style.backgroundColor = "";
   span.style.color = "";
-  if (e.key === "Backspace" && arrPosition >= 0) {
+  if (e.key === "Backspace") {
     if (arrPosition > 0) arrPosition--;
     span = given.children[arrPosition];
     span.style.color = "";
