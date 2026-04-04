@@ -9,7 +9,23 @@
   <body>
     <div class="container">
       <header>Typing speed test</header>
-      <div class="timer">Time</div>
+
+      <div class="top-panel">
+        <div class="highscore">Best: <span id="bestWpm">0</span> wpm</div>
+        <div class="settings">
+          <select id="timeSelect">
+            <option value="10">10 Sec</option>
+            <option value="30" selected>30 Sec</option>
+            <option value="60">1 Min</option>
+          </select>
+          <select id="caseSelect">
+            <option value="mixed" selected>Mixed Case</option>
+            <option value="lower">Lowercase Only</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="timer">30</div>
       <div class="given"></div>
       <div class="textInput">
         <input
@@ -23,13 +39,13 @@
         />
       </div>
       <div class="resetBtn">
-        <button>Reset</button>
+        <button id="resetBtn">Reset</button>
       </div>
       <div class="stats">
         <div class="wpm">wpm</div>
         <div class="accuracy">accuracy</div>
       </div>
     </div>
+    <script src="script.js"></script>
   </body>
-  <script src="script.js"></script>
 </html>

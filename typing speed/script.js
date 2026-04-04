@@ -1,19 +1,27 @@
 let timer = document.querySelector(".timer");
 let input = document.querySelector("input");
-let reset = document.querySelector("button");
+let resetBtn = document.querySelector("#resetBtn");
 let given = document.querySelector(".given");
 let wpmClass = document.querySelector(".wpm");
 let accuracyClass = document.querySelector(".accuracy");
+let timeSelect = document.querySelector("#timeSelect");
+let caseSelect = document.querySelector("#caseSelect");
+let bestWpmDisplay = document.querySelector("#bestWpm");
+
 let typeSound = new Audio("short-click-of-a-computer-mouse.mp3");
 
 let text = "";
 let givenArr = [];
+let defaultTime = 30;
 let time = 30;
 let isTimerRunning = false;
 let intervalID;
 let arrPosition = 0;
 let correctChars = 0;
 let wrongChars = 0;
+
+let highScore = localStorage.getItem("typingHighScore") || 0;
+bestWpmDisplay.textContent = highScore;
 
 async function loadQuote() {
   try {
@@ -24,10 +32,16 @@ async function loadQuote() {
     );
     const data = await response.json();
     text = data.quotes.map((q) => q.quote).join(" ");
+
+    if (caseSelect.value === "lower") {
+      text = text.toLowerCase();
+    }
+
     setupGame();
   } catch (error) {
     text =
       "The stoic philosopher observes the chaos of the world not with apathy, but with a tranquil mind. We suffer more often in imagination than in reality. True freedom is found not in the absence of conflict, but in the absolute mastery of one's own internal reactions to the external world.";
+    if (caseSelect.value === "lower") text = text.toLowerCase();
     setupGame();
   }
 }
@@ -48,12 +62,21 @@ function setupGame() {
 }
 
 function stats() {
-  let timeSpent = 30 - time;
+  let timeSpent = defaultTime - time;
+  if (timeSpent === 0) timeSpent = 1;
+
   let wpm = Math.round((correctChars / 5 / timeSpent) * 60) || 0;
   let accuracy =
     Math.round((correctChars / (correctChars + wrongChars)) * 100) || 0;
+
   wpmClass.textContent = "wpm: " + wpm;
-  accuracyClass.textContent = "accuracy: " + accuracy;
+  accuracyClass.textContent = "accuracy: " + accuracy + "%";
+
+  if (wpm > highScore) {
+    highScore = wpm;
+    localStorage.setItem("typingHighScore", highScore);
+    bestWpmDisplay.textContent = highScore;
+  }
 }
 
 function timerFn() {
@@ -84,8 +107,10 @@ input.addEventListener("keydown", (e) => {
 });
 
 input.addEventListener("input", (e) => {
-  typeSound.currentTime = 0;
-  typeSound.play();
+  try {
+    typeSound.currentTime = 0;
+    typeSound.play();
+  } catch (err) {}
 
   if (
     e.inputType === "insertReplacementText" ||
@@ -95,7 +120,7 @@ input.addEventListener("input", (e) => {
     input.value = input.value.substring(0, lastSpace + 1);
   }
 
-  if (!isTimerRunning && time === 30) timerFn();
+  if (!isTimerRunning && time === defaultTime) timerFn();
 
   const typedText = input.value;
   arrPosition = typedText.length;
@@ -140,9 +165,11 @@ input.addEventListener("input", (e) => {
   }
 });
 
-reset.addEventListener("click", () => {
-  time = 30;
-  timer.textContent = 30;
+function resetGame() {
+  defaultTime = parseInt(timeSelect.value);
+  time = defaultTime;
+  timer.textContent = time;
+
   clearInterval(intervalID);
   isTimerRunning = false;
   input.value = "";
@@ -153,6 +180,12 @@ reset.addEventListener("click", () => {
   wpmClass.textContent = "wpm";
   accuracyClass.textContent = "accuracy";
   loadQuote();
-});
+}
+
+resetBtn.addEventListener("click", resetGame);
+
+timeSelect.addEventListener("change", resetGame);
+caseSelect.addEventListener("change", resetGame);
 
 loadQuote();
+timer.textContent = defaultTime;
