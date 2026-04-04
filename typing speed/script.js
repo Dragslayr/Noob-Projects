@@ -39,9 +39,9 @@ function timerFn() {
       time--;
     } else {
       timer.textContent = "Time's UP!";
+      input.disabled = true;
       clearInterval(intervalID);
       isTimerRunning = false;
-      input.disabled;
       stats();
     }
   }, 1000);
@@ -100,7 +100,7 @@ input.addEventListener("keydown", (e) => {
   if (arrPosition === text.length) {
     timer.textContent = "Complete!";
     clearInterval(intervalID);
-    input.disabled;
+    input.disabled = true;
     stats();
   }
   if (arrPosition < text.length) {
