@@ -163,6 +163,8 @@ button:hover {
   body {
     align-items: flex-start;
     padding-top: 5vh;
+    height: 100dvh;
+    overflow: hidden;
   }
 
   header {

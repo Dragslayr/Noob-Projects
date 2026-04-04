@@ -97,7 +97,12 @@ function timerFn() {
 
 input.addEventListener("mousedown", (e) => {
   e.preventDefault();
-  input.focus();
+  input.focus({ preventScroll: true });
+});
+
+input.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  input.focus({ preventScroll: true });
 });
 
 input.addEventListener("keydown", (e) => {
