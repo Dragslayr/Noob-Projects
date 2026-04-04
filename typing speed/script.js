@@ -58,24 +58,14 @@ input.addEventListener("mousedown", (e) => {
   input.focus();
 });
 
-input.addEventListener("keydown", (e) => {
-  if (e.ctrlKey || e.altKey || e.metaKey) {
-    e.preventDefault();
-    return;
-  }
-
-  if (e.key.startsWith("Arrow")) {
-    e.preventDefault();
-    return;
-  }
+input.addEventListener("input", (e) => {
   if (arrPosition >= text.length || time === 0) return;
-  if (e.key.length > 1 && e.key !== "Backspace") return;
   if (!isTimerRunning) timerFn();
 
   let span = given.children[arrPosition];
   span.style.backgroundColor = "";
   span.style.color = "";
-  if (e.key === "Backspace") {
+  if (e.inputType === "deleteContentBackward") {
     if (arrPosition > 0) {
       let prevSpan = given.children[arrPosition - 1];
       if (prevSpan.style.color === "green") {
@@ -88,7 +78,7 @@ input.addEventListener("keydown", (e) => {
     }
     span = given.children[arrPosition];
     span.style.color = "";
-  } else if (e.key == givenArr[arrPosition]) {
+  } else if (e.data == givenArr[arrPosition]) {
     correctChars++;
     span.style.color = "green";
     arrPosition++;
