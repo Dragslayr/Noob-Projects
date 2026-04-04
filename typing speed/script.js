@@ -34,11 +34,18 @@ function timerFn() {
   }, 1000);
 }
 
+given.children[0].style.backgroundColor = "black";
+given.children[0].style.color = "white";
+
 input.addEventListener("keydown", (e) => {
+  if (arrPosition >= text.length || time === 0) return;
   if (e.key.length > 1 && e.key !== "Backspace") return;
   if (!isTimerRunning) timerFn();
+
   let span = given.children[arrPosition];
-  if (e.key == "Backspace" && arrPosition > 0) {
+  span.style.backgroundColor = "";
+  span.style.color = "";
+  if (e.key === "Backspace" && arrPosition > 0) {
     arrPosition--;
     span = given.children[arrPosition];
     span.style.color = "";
@@ -49,11 +56,27 @@ input.addEventListener("keydown", (e) => {
     span.style.color = "red";
     arrPosition++;
   }
+  if (arrPosition === text.length) {
+    timer.textContent = "Complete!";
+    clearInterval(intervalID);
+  }
+  if (arrPosition < text.length) {
+    let newSpan = given.children[arrPosition];
+    newSpan.style.backgroundColor = "black";
+    newSpan.style.color = "white";
+  }
 });
 reset.addEventListener("click", () => {
-  time = 5;
+  time = 30;
+  for (let i = 0; i < text.length; i++) {
+    let span = given.children[i];
+    span.style.color = "";
+  }
+  given.children[0].style.backgroundColor = "black";
+  given.children[0].style.color = "white";
   clearInterval(intervalID);
-  timer.textContent = "Time";
+  arrPosition = 0;
+  timer.textContent = 30;
   isTimerRunning = false;
   input.value = "";
 });
