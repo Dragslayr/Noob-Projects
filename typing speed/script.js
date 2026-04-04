@@ -95,16 +95,6 @@ function timerFn() {
   }, 1000);
 }
 
-input.addEventListener("mousedown", (e) => {
-  e.preventDefault();
-  input.focus({ preventScroll: true });
-});
-
-input.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  input.focus({ preventScroll: true });
-});
-
 input.addEventListener("keydown", (e) => {
   if (e.ctrlKey || e.altKey || e.metaKey || e.key.startsWith("Arrow")) {
     e.preventDefault();
