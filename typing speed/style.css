@@ -47,19 +47,33 @@ header {
   width: 100%;
   display: flex;
   justify-content: center;
-}
 
-#textInput {
-  width: 100%;
-  max-width: 600px;
-  font-size: 20px;
-  height: 50px;
-  padding: 10px;
-  text-align: center;
+  #textInput {
+    width: 100%;
+    max-width: 600px;
+    font-size: 20px;
+    height: 50px;
+    padding: 10px;
+    text-align: center;
+    user-select: none;
+  }
 }
 
 button {
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
+  cursor: pointer;
+}
+
+.stats {
+  width: 50%;
+  border-top: 1px solid #444040;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 20px;
+  color: rgb(84, 84, 84);
+  font-weight: 300;
+  font-weight: lighter;
+  text-align: center;
 }
