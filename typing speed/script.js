@@ -112,23 +112,16 @@ input.addEventListener("input", (e) => {
     typeSound.play();
   } catch (err) {}
 
-  if (
-    e.inputType === "insertReplacementText" ||
-    (e.data && e.data.length > 1)
-  ) {
-    let lastSpace = input.value.lastIndexOf(" ");
-    input.value = input.value.substring(0, lastSpace + 1);
-  }
-
   if (!isTimerRunning && time === defaultTime) timerFn();
 
-  const typedText = input.value;
-  arrPosition = typedText.length;
+  let typedText = input.value;
 
-  if (arrPosition > text.length) {
-    input.value = typedText.substring(0, text.length);
-    arrPosition = text.length;
+  if (typedText.length > text.length) {
+    typedText = typedText.substring(0, text.length);
+    input.value = typedText;
   }
+
+  arrPosition = typedText.length;
 
   for (let i = 0; i < text.length; i++) {
     let span = given.children[i];
