@@ -17,18 +17,17 @@ let wrongChars = 0;
 
 async function loadQuote() {
   try {
-    given.textContent = "Summoning the Charioteer...";
-    const chapter = Math.floor(Math.random() * 18) + 1;
-    const sloka = Math.floor(Math.random() * 20) + 1;
+    given.textContent = "Loading existential crisis...";
+    const randomSkip = Math.floor(Math.random() * 140);
     const response = await fetch(
-      `https://bhagavadgitaapi.in/slok/${chapter}/${sloka}`,
+      `https://dummyjson.com/quotes?limit=3&skip=${randomSkip}`,
     );
     const data = await response.json();
-    text = data.siva.et || data.purohit.et;
+    text = data.quotes.map((q) => q.quote).join(" ");
     setupGame();
   } catch (error) {
     text =
-      "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself to be the cause of the results of your activities, nor be attached to inaction.";
+      "The stoic philosopher observes the chaos of the world not with apathy, but with a tranquil mind. We suffer more often in imagination than in reality. True freedom is found not in the absence of conflict, but in the absolute mastery of one's own internal reactions to the external world.";
     setupGame();
   }
 }
