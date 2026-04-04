@@ -159,27 +159,25 @@ button:hover {
 }
 
 @media (max-width: 600px) {
-  html,
-  body {
-    position: fixed;
-    width: 100%;
-    height: 100dvh;
-    overflow: hidden;
-    touch-action: none;
-  }
-
   body {
     align-items: flex-start;
-    padding-top: 5vh;
+    padding-top: 2vh;
   }
 
   header {
     display: none;
   }
 
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+  }
+
   .top-panel {
+    order: 1;
     gap: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
   .settings {
@@ -195,17 +193,13 @@ button:hover {
   }
 
   .timer {
-    margin-bottom: 15px;
+    order: 2;
+    margin-bottom: 10px;
     font-size: 20px;
   }
 
-  .given {
-    font-size: 16px;
-    margin-bottom: 15px;
-    line-height: 1.4;
-  }
-
   .textInput {
+    order: 3;
     margin-bottom: 15px;
   }
 
@@ -214,12 +208,25 @@ button:hover {
     height: 50px;
   }
 
+  .given {
+    order: 4;
+    font-size: 16px;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    padding: 0 10px;
+  }
+
+  .resetBtn {
+    order: 5;
+  }
+
   button {
     padding: 10px 20px;
     font-size: 14px;
   }
 
   .stats {
+    order: 6;
     width: 100%;
     margin-top: 15px;
     padding: 10px;
