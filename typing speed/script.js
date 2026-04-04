@@ -4,24 +4,55 @@ let reset = document.querySelector("button");
 let given = document.querySelector(".given");
 let wpmClass = document.querySelector(".wpm");
 let accuracyClass = document.querySelector(".accuracy");
+let typeSound = new Audio("short-click-of-a-computer-mouse.mp3");
 
-given.textContent =
-  "lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta dolor fuga veritatis consequatur architecto vel quod illo ea fugit veniam libero nostrum dignissimos, id labore deleniti accusamus alias nesciunt nam?";
-
-let text = given.textContent;
-given.textContent = "";
+let text = "";
 let givenArr = [];
-
-for (let i = 0; i < text.length; i++) {
-  let span = document.createElement("span");
-  span.textContent = text[i];
-  given.appendChild(span);
-  givenArr[i] = text[i];
-}
 let time = 30;
 let isTimerRunning = false;
 let intervalID;
 let arrPosition = 0;
+let correctChars = 0;
+let wrongChars = 0;
+
+const epicQuotes = [
+  "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself to be the cause of the results of your activities, nor be attached to inaction.",
+  "The soul is never born nor dies at any time. It has not come into being, does not come into being, and will not come into being. It is unborn, eternal, ever-existing and primeval. It is not slain when the body is slain.",
+  "Whenever and wherever there is a decline in religious practice, O descendant of Bharata, and a predominant rise of irreligion—at that time I descend Myself to protect the pious and to annihilate the miscreants.",
+  "Change is the law of the universe. You can be a millionaire, or a pauper in an instant. What is yours today, was somebody else's yesterday and will be somebody else's tomorrow.",
+  "Man is made by his belief. As he believes, so he is. A person is what their thoughts have made them; so take care about what you think. Words are secondary. Thoughts live; they travel far.",
+  "The mind is restless and difficult to restrain, but it is subdued by practice. Set thy heart upon thy work, but never on its reward. The only way you can conquer me is through love, and there I am gladly conquered.",
+  "He who has let go of hatred, who treats all beings with kindness and compassion, who is always serene, unmoved by pain or pleasure, free of the 'I' and 'mine', self-controlled, firm in person, entire heart and mind given to me—he is dear to me.",
+];
+
+async function loadQuote() {
+  try {
+    given.textContent = "Summoning the Charioteer...";
+
+    const randomIndex = Math.floor(Math.random() * epicQuotes.length);
+    text = epicQuotes[randomIndex];
+
+    setupGame();
+  } catch (error) {
+    text = "Do your duty without thought of the fruit.";
+    setupGame();
+  }
+}
+
+function setupGame() {
+  given.innerHTML = "";
+  givenArr = [];
+  for (let i = 0; i < text.length; i++) {
+    let span = document.createElement("span");
+    span.textContent = text[i];
+    given.appendChild(span);
+    givenArr[i] = text[i];
+  }
+  if (given.children.length > 0) {
+    given.children[0].style.backgroundColor = "black";
+    given.children[0].style.color = "white";
+  }
+}
 
 function stats() {
   let timeSpent = 30 - time;
@@ -31,6 +62,7 @@ function stats() {
   wpmClass.textContent = "wpm: " + wpm;
   accuracyClass.textContent = "accuracy: " + accuracy;
 }
+
 function timerFn() {
   isTimerRunning = true;
   intervalID = setInterval(() => {
@@ -47,29 +79,17 @@ function timerFn() {
   }, 1000);
 }
 
-given.children[0].style.backgroundColor = "black";
-given.children[0].style.color = "white";
-
-let correctChars = 0;
-let wrongChars = 0;
-
-input.addEventListener("mousedown", (e) => {
-  e.preventDefault();
-  input.focus();
-});
 input.addEventListener("keydown", (e) => {
-  if (e.ctrlKey || e.altKey || e.metaKey) {
+  if (e.ctrlKey || e.altKey || e.metaKey || e.key.startsWith("Arrow")) {
     e.preventDefault();
-    return;
-  }
-
-  if (e.key.startsWith("Arrow")) {
-    e.preventDefault();
-    return;
   }
 });
+
 input.addEventListener("input", (e) => {
-  if (!isTimerRunning && time > 0) timerFn();
+  typeSound.currentTime = 0;
+  typeSound.play();
+
+  if (!isTimerRunning && time === 30) timerFn();
 
   const typedText = input.value;
   arrPosition = typedText.length;
@@ -99,7 +119,7 @@ input.addEventListener("input", (e) => {
     }
   }
 
-  if (arrPosition >= text.length) {
+  if (arrPosition === text.length && text.length > 0) {
     timer.textContent = "Complete!";
     clearInterval(intervalID);
     input.disabled = true;
@@ -107,28 +127,26 @@ input.addEventListener("input", (e) => {
     return;
   }
 
-  let currentSpan = given.children[arrPosition];
-  currentSpan.style.backgroundColor = "black";
-  currentSpan.style.color = "white";
+  if (arrPosition < text.length) {
+    let newSpan = given.children[arrPosition];
+    newSpan.style.backgroundColor = "black";
+    newSpan.style.color = "white";
+  }
 });
 
 reset.addEventListener("click", () => {
   time = 30;
-  for (let i = 0; i < text.length; i++) {
-    let span = given.children[i];
-    span.style.backgroundColor = "";
-    span.style.color = "";
-  }
-  given.children[0].style.backgroundColor = "black";
-  given.children[0].style.color = "white";
-  clearInterval(intervalID);
-  arrPosition = 0;
-  correctChars = 0;
-  wrongChars = 0;
   timer.textContent = 30;
+  clearInterval(intervalID);
   isTimerRunning = false;
   input.value = "";
   input.disabled = false;
+  arrPosition = 0;
+  correctChars = 0;
+  wrongChars = 0;
   wpmClass.textContent = "wpm";
   accuracyClass.textContent = "accuracy";
+  loadQuote();
 });
+
+loadQuote();
