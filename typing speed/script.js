@@ -15,26 +15,20 @@ let arrPosition = 0;
 let correctChars = 0;
 let wrongChars = 0;
 
-const epicQuotes = [
-  "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself to be the cause of the results of your activities, nor be attached to inaction.",
-  "The soul is never born nor dies at any time. It has not come into being, does not come into being, and will not come into being. It is unborn, eternal, ever-existing and primeval. It is not slain when the body is slain.",
-  "Whenever and wherever there is a decline in religious practice, O descendant of Bharata, and a predominant rise of irreligion—at that time I descend Myself to protect the pious and to annihilate the miscreants.",
-  "Change is the law of the universe. You can be a millionaire, or a pauper in an instant. What is yours today, was somebody else's yesterday and will be somebody else's tomorrow.",
-  "Man is made by his belief. As he believes, so he is. A person is what their thoughts have made them; so take care about what you think. Words are secondary. Thoughts live; they travel far.",
-  "The mind is restless and difficult to restrain, but it is subdued by practice. Set thy heart upon thy work, but never on its reward. The only way you can conquer me is through love, and there I am gladly conquered.",
-  "He who has let go of hatred, who treats all beings with kindness and compassion, who is always serene, unmoved by pain or pleasure, free of the 'I' and 'mine', self-controlled, firm in person, entire heart and mind given to me—he is dear to me.",
-];
-
 async function loadQuote() {
   try {
     given.textContent = "Summoning the Charioteer...";
-
-    const randomIndex = Math.floor(Math.random() * epicQuotes.length);
-    text = epicQuotes[randomIndex];
-
+    const chapter = Math.floor(Math.random() * 18) + 1;
+    const sloka = Math.floor(Math.random() * 20) + 1;
+    const response = await fetch(
+      `https://bhagavadgitaapi.in/slok/${chapter}/${sloka}`,
+    );
+    const data = await response.json();
+    text = data.siva.et || data.purohit.et;
     setupGame();
   } catch (error) {
-    text = "Do your duty without thought of the fruit.";
+    text =
+      "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself to be the cause of the results of your activities, nor be attached to inaction.";
     setupGame();
   }
 }
@@ -79,6 +73,11 @@ function timerFn() {
   }, 1000);
 }
 
+input.addEventListener("mousedown", (e) => {
+  e.preventDefault();
+  input.focus();
+});
+
 input.addEventListener("keydown", (e) => {
   if (e.ctrlKey || e.altKey || e.metaKey || e.key.startsWith("Arrow")) {
     e.preventDefault();
@@ -88,6 +87,14 @@ input.addEventListener("keydown", (e) => {
 input.addEventListener("input", (e) => {
   typeSound.currentTime = 0;
   typeSound.play();
+
+  if (
+    e.inputType === "insertReplacementText" ||
+    (e.data && e.data.length > 1)
+  ) {
+    let lastSpace = input.value.lastIndexOf(" ");
+    input.value = input.value.substring(0, lastSpace + 1);
+  }
 
   if (!isTimerRunning && time === 30) timerFn();
 
