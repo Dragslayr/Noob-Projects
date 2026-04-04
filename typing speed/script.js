@@ -57,9 +57,39 @@ input.addEventListener("mousedown", (e) => {
   e.preventDefault();
   input.focus();
 });
+input.addEventListener("keydown", (e) => {
+  if (e.ctrlKey || e.altKey || e.metaKey) {
+    e.preventDefault();
+    return;
+  }
 
+  if (e.key.startsWith("Arrow")) {
+    e.preventDefault();
+    return;
+  }
+});
 input.addEventListener("input", (e) => {
-  if (arrPosition >= text.length || time === 0) return;
+  if (e.data && e.data.length > 1) {
+    while (arrPosition > 0 && givenArr[arrPosition - 1] !== " ") {
+      let prevSpan = given.children[arrPosition - 1];
+      if (prevSpan.style.color === "green") {
+        correctChars--;
+      } else if (prevSpan.style.color === "red") {
+        wrongChars--;
+      }
+      prevSpan.style.color = "";
+      arrPosition--;
+    }
+
+    input.value = input.value.substring(0, arrPosition);
+
+    let currentSpan = given.children[arrPosition];
+    currentSpan.style.backgroundColor = "black";
+    currentSpan.style.color = "white";
+
+    return;
+  }
+  if (arrPosition >= text.length) return;
   if (!isTimerRunning) timerFn();
 
   let span = given.children[arrPosition];
