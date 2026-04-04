@@ -69,68 +69,47 @@ input.addEventListener("keydown", (e) => {
   }
 });
 input.addEventListener("input", (e) => {
-  if (e.data && e.data.length > 1) {
-    while (arrPosition > 0 && givenArr[arrPosition - 1] !== " ") {
-      let prevSpan = given.children[arrPosition - 1];
-      if (prevSpan.style.color === "green") {
-        correctChars--;
-      } else if (prevSpan.style.color === "red") {
-        wrongChars--;
-      }
-      prevSpan.style.color = "";
-      arrPosition--;
-    }
+  if (!isTimerRunning && time > 0) timerFn();
 
-    input.value = input.value.substring(0, arrPosition);
+  const typedText = input.value;
+  arrPosition = typedText.length;
 
-    let currentSpan = given.children[arrPosition];
-    currentSpan.style.backgroundColor = "black";
-    currentSpan.style.color = "white";
-
-    return;
+  if (arrPosition > text.length) {
+    input.value = typedText.substring(0, text.length);
+    arrPosition = text.length;
   }
-  if (arrPosition >= text.length) {
-    input.value = input.value.substring(0, text.length);
-    return;
-  }
-  if (!isTimerRunning) timerFn();
 
-  let span = given.children[arrPosition];
-  span.style.backgroundColor = "";
-  span.style.color = "";
-  if (e.inputType === "deleteContentBackward") {
-    if (arrPosition > 0) {
-      let prevSpan = given.children[arrPosition - 1];
-      if (prevSpan.style.color === "green") {
-        correctChars--;
-      } else {
-        wrongChars--;
-      }
-
-      arrPosition--;
-    }
-    span = given.children[arrPosition];
+  for (let i = 0; i < text.length; i++) {
+    let span = given.children[i];
     span.style.color = "";
-  } else if (e.data == givenArr[arrPosition]) {
-    correctChars++;
-    span.style.color = "green";
-    arrPosition++;
-  } else {
-    wrongChars++;
-    span.style.color = "red";
-    arrPosition++;
+    span.style.backgroundColor = "";
   }
-  if (arrPosition === text.length) {
+
+  correctChars = 0;
+  wrongChars = 0;
+
+  for (let i = 0; i < arrPosition; i++) {
+    let span = given.children[i];
+    if (typedText[i] === givenArr[i]) {
+      span.style.color = "green";
+      correctChars++;
+    } else {
+      span.style.color = "red";
+      wrongChars++;
+    }
+  }
+
+  if (arrPosition >= text.length) {
     timer.textContent = "Complete!";
     clearInterval(intervalID);
     input.disabled = true;
     stats();
+    return;
   }
-  if (arrPosition < text.length) {
-    let newSpan = given.children[arrPosition];
-    newSpan.style.backgroundColor = "black";
-    newSpan.style.color = "white";
-  }
+
+  let currentSpan = given.children[arrPosition];
+  currentSpan.style.backgroundColor = "black";
+  currentSpan.style.color = "white";
 });
 
 reset.addEventListener("click", () => {
