@@ -9,7 +9,7 @@ let caseSelect = document.querySelector("#caseSelect");
 let bestWpmDisplay = document.querySelector("#bestWpm");
 
 let typeSound = new Audio("short-click-of-a-computer-mouse.mp3");
-
+let clickSound = new Audio("mixkit-modern-technology-select-3124.wav");
 let text = "";
 let givenArr = [];
 let defaultTime = 30;
@@ -165,7 +165,15 @@ input.addEventListener("input", (e) => {
   }
 });
 
+function playClickSound() {
+  try {
+    clickSound.currentTime = 0;
+    clickSound.play();
+  } catch (err) {}
+}
+
 function resetGame() {
+  playClickSound();
   defaultTime = parseInt(timeSelect.value);
   time = defaultTime;
   timer.textContent = time;
@@ -183,7 +191,6 @@ function resetGame() {
 }
 
 resetBtn.addEventListener("click", resetGame);
-
 timeSelect.addEventListener("change", resetGame);
 caseSelect.addEventListener("change", resetGame);
 
