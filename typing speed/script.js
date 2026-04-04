@@ -28,10 +28,8 @@ const epicQuotes = [
 async function loadQuote() {
   try {
     given.textContent = "Summoning the Charioteer...";
-
     const randomIndex = Math.floor(Math.random() * epicQuotes.length);
     text = epicQuotes[randomIndex];
-
     setupGame();
   } catch (error) {
     text = "Do your duty without thought of the fruit.";
@@ -79,6 +77,12 @@ function timerFn() {
   }, 1000);
 }
 
+// 🛑 THE MOUSE BLOCKER IS BACK!
+input.addEventListener("mousedown", (e) => {
+  e.preventDefault();
+  input.focus();
+});
+
 input.addEventListener("keydown", (e) => {
   if (e.ctrlKey || e.altKey || e.metaKey || e.key.startsWith("Arrow")) {
     e.preventDefault();
@@ -88,6 +92,16 @@ input.addEventListener("keydown", (e) => {
 input.addEventListener("input", (e) => {
   typeSound.currentTime = 0;
   typeSound.play();
+
+  // 🚨 THE SUPERVILLAIN ERASER IS BACK! (Mobile Anti-Cheat)
+  // If they tap autocomplete (insertReplacementText) or paste multiple letters...
+  if (
+    e.inputType === "insertReplacementText" ||
+    (e.data && e.data.length > 1)
+  ) {
+    let lastSpace = input.value.lastIndexOf(" "); // Find where the word started
+    input.value = input.value.substring(0, lastSpace + 1); // Nuke the cheat!
+  }
 
   if (!isTimerRunning && time === 30) timerFn();
 
