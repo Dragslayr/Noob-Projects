@@ -89,7 +89,10 @@ input.addEventListener("input", (e) => {
 
     return;
   }
-  if (arrPosition >= text.length) return;
+  if (arrPosition >= text.length) {
+    input.value = input.value.substring(0, text.length);
+    return;
+  }
   if (!isTimerRunning) timerFn();
 
   let span = given.children[arrPosition];
