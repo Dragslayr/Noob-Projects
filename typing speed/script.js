@@ -10,6 +10,8 @@ let bestWpmDisplay = document.querySelector("#bestWpm");
 
 let typeSound = new Audio("short-click-of-a-computer-mouse.mp3");
 let clickSound = new Audio("mixkit-modern-technology-select-3124.wav");
+let cheatSound = new Audio("mixkit-on-or-off-light-switch-tap-2585.wav");
+
 let text = "";
 let givenArr = [];
 let defaultTime = 30;
@@ -95,6 +97,11 @@ function timerFn() {
   }, 1000);
 }
 
+input.addEventListener("mousedown", (e) => {
+  e.preventDefault();
+  input.focus();
+});
+
 input.addEventListener("keydown", (e) => {
   if (e.ctrlKey || e.altKey || e.metaKey || e.key.startsWith("Arrow")) {
     e.preventDefault();
@@ -106,6 +113,18 @@ input.addEventListener("input", (e) => {
     typeSound.currentTime = 0;
     typeSound.play();
   } catch (err) {}
+
+  if (
+    e.inputType === "insertReplacementText" ||
+    (e.data && e.data.length > 1)
+  ) {
+    try {
+      cheatSound.currentTime = 0;
+      cheatSound.play();
+    } catch (err) {}
+    let lastSpace = input.value.lastIndexOf(" ");
+    input.value = input.value.substring(0, lastSpace + 1);
+  }
 
   if (!isTimerRunning && time === defaultTime) timerFn();
 
@@ -134,6 +153,9 @@ input.addEventListener("input", (e) => {
       correctChars++;
     } else {
       span.style.color = "red";
+      if (givenArr[i] === " ") {
+        span.style.backgroundColor = "rgba(255, 0, 0, 0.4)";
+      }
       wrongChars++;
     }
   }
