@@ -12,10 +12,16 @@ let typeSound = new Audio("typeSound.mp3");
 let clickSound = new Audio("clickSound.wav");
 let cheatSound = new Audio("cheatSound.wav");
 
+let savedTime = localStorage.getItem("typingTime") || "30";
+let savedCase = localStorage.getItem("typingCase") || "lower";
+
+timeSelect.value = savedTime;
+caseSelect.value = savedCase;
+
 let text = "";
 let givenArr = [];
-let defaultTime = 30;
-let time = 30;
+let defaultTime = parseInt(savedTime);
+let time = defaultTime;
 let isTimerRunning = false;
 let intervalID;
 let arrPosition = 0;
@@ -191,6 +197,10 @@ function playClickSound() {
 
 function resetGame() {
   playClickSound();
+
+  localStorage.setItem("typingTime", timeSelect.value);
+  localStorage.setItem("typingCase", caseSelect.value);
+
   defaultTime = parseInt(timeSelect.value);
   time = defaultTime;
   timer.textContent = time;
