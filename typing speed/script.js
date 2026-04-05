@@ -8,9 +8,9 @@ let timeSelect = document.querySelector("#timeSelect");
 let caseSelect = document.querySelector("#caseSelect");
 let bestWpmDisplay = document.querySelector("#bestWpm");
 
-let typeSound = new Audio("short-click-of-a-computer-mouse.mp3");
-let clickSound = new Audio("mixkit-modern-technology-select-3124.wav");
-let cheatSound = new Audio("mixkit-on-or-off-light-switch-tap-2585.wav");
+let typeSound = new Audio("typeSound.mp3");
+let clickSound = new Audio("clickSound.wav");
+let cheatSound = new Audio("cheatSound.wav");
 
 let text = "";
 let givenArr = [];
