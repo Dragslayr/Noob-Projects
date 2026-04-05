@@ -10,7 +10,7 @@ let bestWpmDisplay = document.querySelector("#bestWpm");
 
 let typeSound = new Audio("short-click-of-a-computer-mouse.mp3");
 let clickSound = new Audio("mixkit-modern-technology-select-3124.wav");
-let cheatSound = new Audio("mixkit-on-or-off-light-switch-tap-2585.wav");
+let cheatSound = new Audio("error.mp3");
 
 let text = "";
 let givenArr = [];
@@ -21,6 +21,7 @@ let intervalID;
 let arrPosition = 0;
 let correctChars = 0;
 let wrongChars = 0;
+let previousInput = "";
 
 let highScore = localStorage.getItem("typingHighScore") || 0;
 bestWpmDisplay.textContent = highScore;
@@ -116,14 +117,16 @@ input.addEventListener("input", (e) => {
 
   if (
     e.inputType === "insertReplacementText" ||
+    e.inputType === "insertFromPaste" ||
     (e.data && e.data.length > 1)
   ) {
     try {
       cheatSound.currentTime = 0;
       cheatSound.play();
     } catch (err) {}
-    let lastSpace = input.value.lastIndexOf(" ");
-    input.value = input.value.substring(0, lastSpace + 1);
+    input.value = previousInput;
+  } else {
+    previousInput = input.value;
   }
 
   if (!isTimerRunning && time === defaultTime) timerFn();
@@ -133,6 +136,7 @@ input.addEventListener("input", (e) => {
   if (typedText.length > text.length) {
     typedText = typedText.substring(0, text.length);
     input.value = typedText;
+    previousInput = input.value;
   }
 
   arrPosition = typedText.length;
@@ -154,7 +158,7 @@ input.addEventListener("input", (e) => {
     } else {
       span.style.color = "red";
       if (givenArr[i] === " ") {
-        span.style.backgroundColor = "rgba(255, 0, 0, 0.4)";
+        span.style.backgroundColor = "red";
       }
       wrongChars++;
     }
@@ -191,6 +195,7 @@ function resetGame() {
   clearInterval(intervalID);
   isTimerRunning = false;
   input.value = "";
+  previousInput = "";
   input.disabled = false;
   arrPosition = 0;
   correctChars = 0;
