@@ -25,6 +25,15 @@ form.addEventListener("submit", async (e) => {
     result.innerHTML = `<p>Loading...</p>`;
     let res = await fetch(url);
     let data = await res.json();
+
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
+
+    let suggestedCity = data.location.name;
+    if (suggestedCity.toLowerCase() !== city.toLowerCase()) {
+      throw new Error(`No exact match. Did you mean ${suggestedCity}?`);
+    }
     let details = new Details(
       data.location.name,
       data.current.temp_c,
@@ -45,8 +54,6 @@ form.addEventListener("submit", async (e) => {
       <p>Wind Speed: ${details.wind} kph</p>
     `;
   } catch (error) {
-    result.innerHTML = `
-      Error fetching weather data. Please try again later.`;
-    console.error("Error fetching weather data:", error);
+    result.innerHTML = `<p>${error.message}</p>`;
   }
 });
