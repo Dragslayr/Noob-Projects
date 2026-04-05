@@ -10,7 +10,7 @@ let bestWpmDisplay = document.querySelector("#bestWpm");
 
 let typeSound = new Audio("short-click-of-a-computer-mouse.mp3");
 let clickSound = new Audio("mixkit-modern-technology-select-3124.wav");
-let cheatSound = new Audio("error.mp3");
+let cheatSound = new Audio("mixkit-on-or-off-light-switch-tap-2585.wav");
 
 let text = "";
 let givenArr = [];
@@ -106,15 +106,14 @@ input.addEventListener("mousedown", (e) => {
 input.addEventListener("keydown", (e) => {
   if (e.ctrlKey || e.altKey || e.metaKey || e.key.startsWith("Arrow")) {
     e.preventDefault();
+    try {
+      cheatSound.currentTime = 0;
+      cheatSound.play();
+    } catch (err) {}
   }
 });
 
 input.addEventListener("input", (e) => {
-  try {
-    typeSound.currentTime = 0;
-    typeSound.play();
-  } catch (err) {}
-
   if (
     e.inputType === "insertReplacementText" ||
     e.inputType === "insertFromPaste" ||
@@ -126,6 +125,10 @@ input.addEventListener("input", (e) => {
     } catch (err) {}
     input.value = previousInput;
   } else {
+    try {
+      typeSound.currentTime = 0;
+      typeSound.play();
+    } catch (err) {}
     previousInput = input.value;
   }
 
@@ -158,7 +161,7 @@ input.addEventListener("input", (e) => {
     } else {
       span.style.color = "red";
       if (givenArr[i] === " ") {
-        span.style.backgroundColor = "red";
+        span.style.backgroundColor = "rgba(255, 0, 0, 0.4)";
       }
       wrongChars++;
     }
