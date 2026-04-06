@@ -18,7 +18,7 @@ class Details {
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  let city = input.value;
+  let city = input.value.trim();
   const apiKey = "a476182723d8419d978163025260504";
   let url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
   try {
