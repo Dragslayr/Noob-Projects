@@ -14,24 +14,32 @@
   </head>
   <body>
     <main>
+      <div class="quote"></div>
       <div class="timer">
         <div class="thead">
           <select name="thead" id="thead">
-            <option value="10">10 min</option>
-            <option value="10">15 min</option>
-            <option value="10">30 min</option>
-            <option value="10">60 min</option>
+            <option value="time" disabled selected>time</option>
+            <option value="10">10min</option>
+            <option value="15">15min</option>
+            <option value="30">30min</option>
+            <option value="60">60min</option>
           </select>
         </div>
-        <div class="time">10 min</div>
+        <div class="time">select time</div>
+        <div class="cntdown">
+          <div class="box" id="box1">0</div>
+          <div class="box" id="box2">0</div>
+          <div class="col">:</div>
+          <div class="box" id="box3">0</div>
+          <div class="box" id="box4">0</div>
+        </div>
       </div>
-      <div class="display">time left</div>
       <div class="button">
         <div class="start">
           <button>start</button>
         </div>
         <div class="reset">
-          <button>reset</button>
+          <button hidden>reset</button>
         </div>
       </div>
     </main>
