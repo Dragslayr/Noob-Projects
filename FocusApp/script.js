@@ -7,7 +7,9 @@ let quote = document.querySelector(".quote");
 let cntdown = document.querySelector(".cntdown");
 let boxes = document.querySelectorAll(".box");
 const api_url = "https://dummyjson.com/quotes/random";
-
+let clickSound = new Audio("assets/clickSound.wav");
+let hoverSound = new Audio("assets/hover.wav");
+let bgm = new Audio("assets/bgm.wav");
 async function getQuote() {
   try {
     quote.textContent = "loading...";
@@ -30,14 +32,23 @@ function showCntdown(min, sec) {
   boxes[2].textContent = Math.floor(sec / 10);
   boxes[3].textContent = Math.floor(sec % 10);
 }
-let intervalId;
+let intervalId = null;
 function callCntdown() {
+  if (intervalId) return;
   let min = Number(select.value);
   let sec = 0;
 
   intervalId = setInterval(() => {
     if (min === 0 && sec === 0) {
+      clickSound.currentTime = 0;
+      clickSound.play();
+      bgm.currentTime = 0;
+      bgm.pause();
+      time.hidden = false;
+      time.textContent = "congrats! keep it up.";
+      cntdown.style.display = "none";
       clearInterval(intervalId);
+      intervalId = null;
       return;
     }
     console.log(`${min} : ${sec}`);
@@ -52,11 +63,22 @@ function callCntdown() {
 }
 
 select.addEventListener("change", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
   time.textContent = select.value + "min";
 });
 
 startBtn.addEventListener("click", () => {
   if (select.value != "time") {
+    clickSound.currentTime = 0;
+
+    clickSound.play();
+
+    bgm.currentTime = 0;
+    bgm.volume = 0.2;
+    bgm.loop = true;
+    bgm.play();
+
     getQuote();
     startBtn.hidden = true;
     resetBtn.hidden = false;
@@ -69,6 +91,8 @@ startBtn.addEventListener("click", () => {
 });
 
 resetBtn.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
   startBtn.hidden = false;
   resetBtn.hidden = true;
   thead.hidden = false;
@@ -76,4 +100,26 @@ resetBtn.addEventListener("click", () => {
   time.hidden = false;
   cntdown.style.display = "none";
   clearInterval(intervalId);
+  intervalId = null;
+  bgm.pause();
+  bgm.currentTime = 0;
+});
+
+select.addEventListener("mouseover", () => {
+  hoverSound.currentTime = 0;
+  hoverSound.play();
+});
+select.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
+});
+
+startBtn.addEventListener("mouseover", () => {
+  hoverSound.currentTime = 0;
+  hoverSound.play();
+});
+
+resetBtn.addEventListener("mouseover", () => {
+  hoverSound.currentTime = 0;
+  hoverSound.play();
 });
